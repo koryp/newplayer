@@ -22,6 +22,14 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  var userJS = [
+        'Gruntfile.js',
+        '<%= config.app %>/scripts/{,**/}*.js',
+        '!<%= config.app %>/scripts/**/mediaelement/*',
+        '!<%= config.app %>/scripts/vendor/**',
+        'test/spec/{,*/}*.js'
+      ];
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -35,35 +43,41 @@ module.exports = function (grunt) {
         tasks: ['wiredep']
       },
       js: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
+        files: userJS,
         tasks: ['jshint'],
         options: {
           livereload: true
         }
       },
       jstest: {
-        files: ['test/spec/{,*/}*.js'],
+        files: ['test/spec/{,**/}*.js'],
         tasks: ['test:watch']
       },
       gruntfile: {
         files: ['Gruntfile.js']
       },
       sass: {
-        files: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
+        files: ['<%= config.app %>/styles/{,**/}*.{scss,sass}'],
         tasks: ['sass:server', 'autoprefixer']
       },
       styles: {
-        files: ['<%= config.app %>/styles/{,*/}*.css'],
+        files: ['<%= config.app %>/styles/{,**/}*.css'],
         tasks: ['newer:copy:styles', 'autoprefixer']
+      },
+      config: {
+        files: ['<%= config.app %>/{,**/}*.json'],
+        options: {
+          livereload: true
+        }
       },
       livereload: {
         options: {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
-          '<%= config.app %>/{,*/}*.html',
-          '.tmp/styles/{,*/}*.css',
-          '<%= config.app %>/images/{,*/}*'
+          '<%= config.app %>/{,**/}*.html',
+          '.tmp/styles/{,**/}*.css',
+          '<%= config.app %>/images/{,**/}*'
         ]
       }
     },
@@ -131,12 +145,7 @@ module.exports = function (grunt) {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish')
       },
-      all: [
-        'Gruntfile.js',
-        '<%= config.app %>/scripts/{,*/}*.js',
-        '!<%= config.app %>/scripts/vendor/*',
-        'test/spec/{,*/}*.js'
-      ]
+      all: userJS
     },
 
     // Mocha testing framework configuration options
@@ -339,13 +348,17 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             'images/{,*/}*.webp',
-            '{,*/}*.html',
+            '{,*/}*.{html,xml}', // NP - MW - copy xml files, i.e. imsmanifest.xml
             'styles/fonts/{,*/}*.*',
-            'assets/**'     // NP - KJP - copy all project-specific assets
+            'assets/**',     // NP - KJP - copy all project-specific assets
+            '*.json', // NP - MW - copy root level json config files
+            '*.css' // NP - MW - copy sample.css and other root level css
           ]
-        }, {
+          // NP - MW - we don't want .htaccess for this build
+/*        }, {
           src: 'node_modules/apache-server-configs/dist/.htaccess',
           dest: '<%= config.dist %>/.htaccess'
+          */
 /*
         }, {
           expand: true,
@@ -368,11 +381,17 @@ module.exports = function (grunt) {
           cwd: '.',
           src: 'bower_components/mediaelement/build/*',
           dest: '<%= config.dist %>/scripts/component/npVideo/mediaelement/'
+        }, {  // NP - KJP - copy all plugins
+          expand: true,
+          dot: true,
+          cwd: '<%= config.app %>/scripts/plugin/',
+          src: '{,**/}*.{js,html,css}', // NP - MW
+          dest: '<%= config.dist %>/scripts/plugin/'
         }, {  // NP - KJP - copy all component templates
           expand: true,
           dot: true,
           cwd: '<%= config.app %>/scripts/component/',
-          src: '{,*/}*.{js,html,css}',
+          src: '{,**/}*.{js,html,css}', // NP - MW
           dest: '<%= config.dist %>/scripts/component/'
         }, {  // NP - KJP - copy manifest templates
           expand: true,
@@ -420,7 +439,7 @@ module.exports = function (grunt) {
       dist: [
         'sass',
         'copy:styles',
-        'imagemin',
+//        'imagemin',
         'svgmin'
       ]
     }
@@ -477,7 +496,7 @@ module.exports = function (grunt) {
     'uglify',
     'copy:dist',
     'modernizr',
-    'rev',
+    //'rev'//,
     'usemin',
     'htmlmin'
   ]);

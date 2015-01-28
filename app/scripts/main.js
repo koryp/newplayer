@@ -5,6 +5,7 @@ angular
 		'newplayer',
 		[
 			'ui.router',
+			'ui.bootstrap',
 			'oc.lazyLoad',
 			'ngSanitize'
 		]
@@ -20,6 +21,8 @@ angular
 	.factory('ManifestService' , ManifestService)
 	/** @ngInject */
 	.factory('ComponentService' , ComponentService)
+	/** @ngInject */
+	.factory('AssessmentService' , AssessmentService)
 	/** @ngInject */
 	.controller('AppController' , AppController)
 	/** @ngInject */

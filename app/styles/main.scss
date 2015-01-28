@@ -1,6 +1,6 @@
 // bower:scss
 // endbower
-@import "compass-mixins/lib/compass/css3/border-radius";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/mixins/_border-radius";
 
 .browsehappy {
 	display: none;
@@ -101,8 +101,16 @@
 }
 
 .npVideo {
+	width: 80%;
+	max-width: 640px;
+	margin: 0 auto;
+
+	* {
+		outline: 0;
+	}
 	video {
-		height: auto;
+		height: 100%;
+		width: 100%;
 	}
 }
 
@@ -111,81 +119,87 @@
 	line-height: 20px;
 }
 
-.np-expand-toggle {
-	cursor: pointer;
-	text-align: left;
+.np-expandable {
+	&.np-cmp-main,
+	>.np-cmp-main {
+		cursor: pointer;
+		text-align: left;
 
-	&:before {
-		content: "\00f054"; 
-		float: left;
-		font-family: 'FontAwesome';
-		-webkit-transition: 0.5s ease all;
-		transition: 0.5s ease all;
-		-webkit-transform: rotate(90deg);
-		transform: rotate(90deg);
-		margin: 0 0.5em 0 0;
+		&:before {
+			content: "\00f054"; 
+			float: left;
+			font-family: 'FontAwesome';
+			-webkit-transition: 0.5s ease all;
+			transition: 0.5s ease all;
+			-webkit-transform: rotate(90deg);
+			transform: rotate(90deg);
+			margin: 0 0.5em 0 0;
+		}
 	}
-	&.collapsed:before {
-		-webkit-transform: rotate(0deg);
-		transform: rotate(0deg);
+	&.np-expandable-collapsed {
+		.np-cmp-main:before {
+			-webkit-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
 	}
 }
 
 .npColumn {
-	line-height: 0; 
-	font-size: 0;
 
-	&:after {
-		content: "."; 
-		visibility: hidden; 
-		display: block; 
-		height: 0; 
-		clear: both;
-	}
-
-	.column {
-		float: left;
-		line-height: 0; 
-		font-size: 0;
-
-		&.col-last {
-			&:after {
-				content: "."; 
-				visibility: hidden; 
-				display: inline-block; 
-				height: 0; 
-				clear: both;
-				width: 100%;
-			}
+	.row {
+		&:after {
+			content: "."; 
+			visibility: hidden; 
+			display: block; 
+			height: 0; 
+			clear: both;
 		}
-		&.col-1 {
+
+		&.col-1 .column {
 			width: 100%;
 		}
-		&.col-2 {
+		&.col-2 .column {
 			width: 50%;
 		}
-		&.col-3 {
+		&.col-3 .column {
 			width: 33.333333333%;
 		}
-		&.col-4 {
+		&.col-4 .column {
 			width: 25%;
 		}
-		&.col-5 {
+		&.col-5 .column {
 			width: 20%;
 		}
-		&.col-6 {
+		&.col-6 .column {
 			width: 16.666666666%;
 		}
-		&.col-7 {
+		&.col-7 .column {
 			width: 14.285714285%;
 		}
 
+		.column {
+			float: left;
+
+			&.col-last {
+				&:after {
+					clear: both;
+					content: "."; 
+					visibility: hidden; 
+					display: block; 
+					height: 0; 
+					width: 100%;
+				}
+			}
+
+		}
 	}
 }
 
 .npButton {
+	background-color: #7f7f7f;
 	border: none;
-	@include border-radius(6px);
+	@include border-top-radius(6px);
+	@include border-bottom-radius(6px);
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
@@ -208,50 +222,32 @@
 		max-width: 420px;
 	}
 
-	.npVideo {
-		video {
-			width: 100%;
-		}
-		.mejs-mediaelement {
-			position: relative;
-		}
-		.mejs-video {
-			width: 100% !important;
-			height: auto !important;
-		}
-		.mejs-overlay,
-		.mejs-poster {
-			height: auto !important;
-			width: auto !important;
-		}
-	}
-
 	.npColumn {
-		.column {
-			float: none;
-
-			&.col-1 {
+		.row {
+			&.col-1 .column {
 				width: 100%;
 			}
-			&.col-2 {
+			&.col-2 .column {
 				width: 100%;
 			}
-			&.col-3 {
+			&.col-3 .column {
 				width: 100%;
 			}
-			&.col-4 {
+			&.col-4 .column {
 				width: 100%;
 			}
-			&.col-5 {
+			&.col-5 .column {
 				width: 100%;
 			}
-			&.col-6 {
+			&.col-6 .column {
 				width: 100%;
 			}
-			&.col-7 {
+			&.col-7 .column {
 				width: 100%;
 			}
-
+			.column {
+				float: none;
+			}
 		}
 	}
 }
